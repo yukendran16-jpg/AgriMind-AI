@@ -1,5 +1,4 @@
 import React from 'react';
-import { useAuth } from '../context/AuthContext';
 import { Sprout, Activity, MapPin, Bot, LogOut, Shield } from 'lucide-react';
 
 interface NavbarProps {
@@ -8,10 +7,8 @@ interface NavbarProps {
 }
 
 export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
-  const { user, logout } = useAuth();
-
   const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Activity },
+    { id: 'dashboard', label: 'Mission Dashboard', icon: Activity },
     { id: 'scan', label: 'Disease Scanner (XAI)', icon: Sprout },
     { id: 'outbreak', label: 'GIS Outbreak Map', icon: MapPin },
     { id: 'agents', label: 'Multi-Agent Mesh', icon: Bot },
@@ -24,8 +21,8 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
           <Sprout size={28} color="#05140a" />
         </div>
         <div>
-          <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ecf0f1', lineHeight: 1.1 }}>AgriMind AI</h1>
-          <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 600, letterSpacing: '0.05em' }}>PREDICT. EXPLAIN. PREVENT. OPTIMIZE.</span>
+          <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ecf0f1', lineHeight: 1.1 }}>AgriMind OS</h1>
+          <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 600, letterSpacing: '0.05em' }}>AI FARM COMMAND CENTER</span>
         </div>
       </div>
 
@@ -61,18 +58,11 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: '0.85rem', fontWeight: 700 }}>{user?.fullName || 'Ramesh Patel'}</div>
+          <div style={{ fontSize: '0.85rem', fontWeight: 700 }}>Ramesh Patel</div>
           <div style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 600, textTransform: 'capitalize', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'flex-end' }}>
-            <Shield size={12} /> {user?.role || 'farmer'}
+            <Shield size={12} /> farmer
           </div>
         </div>
-        <button
-          onClick={logout}
-          title="Sign Out"
-          style={{ background: 'rgba(231, 76, 60, 0.15)', border: '1px solid #e74c3c', color: '#e74c3c', padding: '8px 12px', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: 700 }}
-        >
-          <LogOut size={16} /> Exit
-        </button>
       </div>
     </header>
   );
