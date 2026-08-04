@@ -1,0 +1,99 @@
+:root {
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  
+  --bg-primary: #0a0f0d;
+  --bg-secondary: #121a16;
+  --bg-card: rgba(20, 32, 26, 0.65);
+  --bg-card-hover: rgba(28, 44, 36, 0.85);
+  
+  --border-color: rgba(46, 204, 113, 0.15);
+  --border-glow: rgba(46, 204, 113, 0.35);
+  
+  --primary: #2ecc71;
+  --primary-glow: rgba(46, 204, 113, 0.4);
+  --primary-dark: #27ae60;
+  
+  --accent-gold: #f39c12;
+  --accent-red: #e74c3c;
+  --accent-blue: #3498db;
+  
+  --text-main: #ecf0f1;
+  --text-muted: #95a5a6;
+  --text-sub: #bdc3c7;
+  
+  --glass-bg: rgba(18, 28, 22, 0.6);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glass-blur: blur(14px);
+  
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-md);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: #05140a;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px var(--primary-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--primary-glow);
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-low { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid #2ecc71; }
+.badge-medium { background: rgba(243, 156, 18, 0.2); color: #f39c12; border: 1px solid #f39c12; }
+.badge-high { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border: 1px solid #e74c3c; }
+
+/* Custom Scrollbars */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: rgba(46, 204, 113, 0.25); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
