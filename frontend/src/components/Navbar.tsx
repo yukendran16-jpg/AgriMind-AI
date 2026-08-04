@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sprout, Activity, MapPin, Bot, LogOut, Shield } from 'lucide-react';
+import { Sprout, Activity, MapPin, Bot, Layers } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: string;
@@ -8,6 +8,7 @@ interface NavbarProps {
 
 export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
   const navItems = [
+    { id: 'twin', label: 'Digital Farm Twin', icon: Layers },
     { id: 'dashboard', label: 'Mission Dashboard', icon: Activity },
     { id: 'scan', label: 'Disease Scanner (XAI)', icon: Sprout },
     { id: 'outbreak', label: 'GIS Outbreak Map', icon: MapPin },
@@ -22,7 +23,7 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
         </div>
         <div>
           <h1 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#ecf0f1', lineHeight: 1.1 }}>AgriMind OS</h1>
-          <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 600, letterSpacing: '0.05em' }}>AI FARM COMMAND CENTER</span>
+          <span style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 600, letterSpacing: '0.05em' }}>DIGITAL TWIN OPERATING SYSTEM</span>
         </div>
       </div>
 
@@ -59,9 +60,7 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         <div style={{ textAlign: 'right' }}>
           <div style={{ fontSize: '0.85rem', fontWeight: 700 }}>Ramesh Patel</div>
-          <div style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 600, textTransform: 'capitalize', display: 'flex', alignItems: 'center', gap: '4px', justifyContent: 'flex-end' }}>
-            <Shield size={12} /> farmer
-          </div>
+          <div style={{ fontSize: '0.75rem', color: '#2ecc71', fontWeight: 600 }}>Lead Farmer • Kheda</div>
         </div>
       </div>
     </header>

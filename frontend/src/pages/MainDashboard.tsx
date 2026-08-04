@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import Navbar from './components/Navbar';
-import Dashboard from './components/Dashboard';
-import ScanDisease from './components/ScanDisease';
-import OutbreakMap from './components/OutbreakMap';
-import AgentChat from './components/AgentChat';
+import Navbar from '../components/Navbar';
+import Dashboard from '../components/Dashboard';
+import ScanDisease from '../components/ScanDisease';
+import OutbreakMap from '../components/OutbreakMap';
+import AgentChat from '../components/AgentChat';
+import DigitalTwin from './DigitalTwin';
 
 export default function MainDashboard() {
-  const [activeTab, setActiveTab] = useState('scan');
+  const [activeTab, setActiveTab] = useState('twin');
   const [diagnosisResult, setDiagnosisResult] = useState<any>(null);
 
   return (
@@ -14,7 +15,8 @@ export default function MainDashboard() {
       <Navbar activeTab={activeTab} setActiveTab={setActiveTab} />
       
       <main style={{ flex: 1, marginTop: '16px' }}>
-        {activeTab === 'dashboard' && <Dashboard diagnosisResult={diagnosisResult} />}
+        {activeTab === 'dashboard' && <Dashboard diagnosisResult={diagnosisResult} setActiveTab={setActiveTab} />}
+        {activeTab === 'twin' && <DigitalTwin />}
         {activeTab === 'scan' && <ScanDisease setDiagnosisResult={setDiagnosisResult} setActiveTab={setActiveTab} />}
         {activeTab === 'outbreak' && <OutbreakMap />}
         {activeTab === 'agents' && <AgentChat />}
