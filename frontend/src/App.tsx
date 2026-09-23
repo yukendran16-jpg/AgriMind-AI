@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { UserRole } from './types/auth';
 import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -11,6 +12,7 @@ import Wizard from './pages/Wizard';
 import DeviceManagement from './pages/DeviceManagement';
 import SimulationEngine from './pages/SimulationEngine';
 import Analytics from './pages/Analytics';
+import MainDashboard from './pages/MainDashboard';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode; allowedRoles?: UserRole[] }> = ({ children, allowedRoles }) => {
   const { isAuthenticated, user, hasRole } = useAuth();
