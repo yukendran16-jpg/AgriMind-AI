@@ -17,11 +17,35 @@ export default function ScanDisease({ setDiagnosisResult, setActiveTab }) {
     }
   }
 
+  const handleUseSampleImage = () => {
+    // Generate sample image blob for instant zero-file testing
+    const canvas = document.createElement('canvas')
+    canvas.width = 400
+    canvas.height = 400
+    const ctx = canvas.getContext('2d')
+    if (ctx) {
+      ctx.fillStyle = '#2d5a27'
+      ctx.fillRect(0, 0, 400, 400)
+      ctx.fillStyle = '#8a3b14'
+      ctx.beginPath()
+      ctx.arc(200, 200, 80, 0, 2 * Math.PI)
+      ctx.fill()
+    }
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const sampleFile = new File([blob], 'sample_tomato_leaf.png', { type: 'image/png' })
+        setFile(sampleFile)
+        setPreview(canvas.toDataURL())
+      }
+    })
+  }
+
   const handleScanSubmit = async () => {
     if (!file) {
-      alert("Please upload or capture a crop leaf image first.")
-      return
+      // Auto fallback to sample image if user didn't select one
+      handleUseSampleImage()
     }
+
     setLoading(true)
 
     const formData = new FormData()

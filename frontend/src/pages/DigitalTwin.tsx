@@ -31,6 +31,13 @@ export default function DigitalTwin() {
           <p style={{ color: '#95a5a6', fontSize: '0.95rem' }}>Multi-layer spatial simulation & plant lifecycle health tracker</p>
         </div>
 
+        <button
+          onClick={() => window.location.href = '/simulation'}
+          style={{ padding: '12px 20px', background: 'linear-gradient(135deg, #2ecc71, #27ae60)', border: 'none', borderRadius: '10px', color: '#05140a', fontWeight: 800, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+        >
+          <Cpu size={18} /> Launch AI Decision Simulator
+        </button>
+
         {/* Layer Selector Bar */}
         <div style={{ display: 'flex', gap: '8px', background: 'rgba(0,0,0,0.3)', padding: '6px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
           {[

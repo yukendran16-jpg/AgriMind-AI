@@ -11,8 +11,18 @@ class Settings(BaseSettings):
     
     # Auth & JWT
     SECRET_KEY: str = "AGRIMIND_SECRET_KEY_SUPER_SECURE_PRODUCTION_GRADE_12345"
+    REFRESH_SECRET_KEY: str = "AGRIMIND_REFRESH_SECRET_KEY_SUPER_SECURE_PRODUCTION_GRADE_67890"
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7 # 7 days
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 # 1 hour
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 30 # 30 days
+    OTP_EXPIRE_MINUTES: int = 10
+    
+    # Redis
+    REDIS_URL: str = "redis://localhost:6379/0"
+
+    # Google OAuth
+    GOOGLE_CLIENT_ID: Optional[str] = "google-client-id-placeholder"
+    GOOGLE_CLIENT_SECRET: Optional[str] = "google-client-secret-placeholder"
     
     # Database
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/agrimind_db"
@@ -25,3 +35,4 @@ class Settings(BaseSettings):
         case_sensitive = True
 
 settings = Settings()
+

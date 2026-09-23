@@ -39,9 +39,10 @@ async def predict_crop_disease(
             infected_area_sq_cm=cv_res["infected_area_sq_cm"],
             gradcam_heatmap_url=gradcam_url,
             symptoms=cv_res["symptoms"],
-            probable_sources=agent_res["source_analysis"],
-            yield_loss_projection=agent_res["yield_projection"],
-            treatment_recommendations=agent_res["treatment_plan"],
+            probable_sources=[s["source"] for s in agent_res["source_analysis"]],
+            yield_loss_projection=f"Projected Loss Without Treatment: {agent_res['yield_projection']['without_treatment_loss_pct']}%, Financial Risk: ${agent_res['yield_projection']['financial_risk_usd']}",
+            treatment_recommendations=agent_res["treatment_plan"]["chemical_treatment"],
+
             progression=agent_res["progression"],
             timestamp=datetime.now(timezone.utc)
         )
