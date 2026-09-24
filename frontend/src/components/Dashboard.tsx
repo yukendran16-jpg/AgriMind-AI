@@ -23,6 +23,90 @@ export default function Dashboard({ diagnosisResult, setActiveTab }: DashboardPr
 
   return (
     <div style={{ padding: '0 32px 40px 32px', maxWidth: '1440px', margin: '0 auto' }}>
+      {/* Dynamic AI Diagnosis Result Card (shown when leaf scan completes) */}
+      {diagnosisResult && (
+        <div className="glass-panel" style={{ padding: '28px 32px', marginBottom: '28px', border: '1px solid var(--border-glow)', background: 'linear-gradient(135deg, rgba(22, 42, 31, 0.95) 0%, rgba(10, 20, 15, 0.98) 100%)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ background: 'rgba(46,204,113,0.2)', color: '#2ecc71', border: '1px solid #2ecc71', fontSize: '0.75rem', fontWeight: 800, padding: '4px 10px', borderRadius: '12px' }}>
+                  REAL AI INFERENCE REPORT
+                </span>
+                <span style={{ fontSize: '0.85rem', color: '#95a5a6' }}>
+                  Model Ver: {diagnosisResult.model_version || '1.0.0'} • {diagnosisResult.timestamp || new Date().toLocaleString()}
+                </span>
+              </div>
+              <h2 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#ecf0f1', marginTop: '8px' }}>
+                {diagnosisResult.disease_name || diagnosisResult.disease || diagnosisResult.prediction?.class || 'Tomato Disease Analysis'}
+              </h2>
+              <p style={{ color: '#bdc3c7', fontSize: '0.95rem', maxWidth: '700px', marginTop: '4px' }}>
+                {diagnosisResult.disease_description || 'Leaf pathology analyzed by AgriMind TensorFlow CNN model.'}
+              </p>
+            </div>
+
+            <div style={{ textAlign: 'right', background: 'rgba(0,0,0,0.3)', padding: '16px 24px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+              <div style={{ fontSize: '0.8rem', color: '#95a5a6', textTransform: 'uppercase', tracking: '1px' }}>AI Confidence</div>
+              <div style={{ fontSize: '2.5rem', fontWeight: 900, color: (diagnosisResult.confidence >= 0.6) ? '#2ecc71' : '#f39c12' }}>
+                {((diagnosisResult.confidence || 0) * (diagnosisResult.confidence <= 1 ? 100 : 1)).toFixed(1)}%
+              </div>
+              <div style={{ fontSize: '0.75rem', color: (diagnosisResult.confidence >= 0.6) ? '#2ecc71' : '#f39c12' }}>
+                {diagnosisResult.confidence >= 0.6 ? 'High Confidence Prediction' : 'Low Confidence Warning'}
+              </div>
+            </div>
+          </div>
+
+          {/* Low Confidence Warning Banner */}
+          {(diagnosisResult.is_low_confidence || (diagnosisResult.confidence && diagnosisResult.confidence < 0.6)) && (
+            <div style={{ marginTop: '20px', padding: '14px 18px', background: 'rgba(243, 156, 18, 0.15)', border: '1px solid #f39c12', borderRadius: '10px', color: '#f39c12', display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.9rem' }}>
+              <AlertTriangle size={20} />
+              <div>
+                <strong>Low Confidence Prediction:</strong> {diagnosisResult.confidence_warning || 'Please capture a clearer leaf image with balanced lighting or consult an agricultural expert.'}
+              </div>
+            </div>
+          )}
+
+          {/* Class Probabilities Distribution Bars */}
+          {diagnosisResult.probabilities && (
+            <div style={{ marginTop: '24px', background: 'rgba(0,0,0,0.25)', padding: '20px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+              <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ecf0f1', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <TrendingUp size={16} color="#2ecc71" /> Softmax Class Probability Distribution
+              </h4>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+                {Object.entries(diagnosisResult.probabilities).map(([className, prob]) => {
+                  const pct = typeof prob === 'number' ? (prob <= 1 ? prob * 100 : prob) : 0;
+                  const isTop = className === (diagnosisResult.disease_name || diagnosisResult.prediction?.class);
+                  return (
+                    <div key={className}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', marginBottom: '6px' }}>
+                        <span style={{ color: isTop ? '#2ecc71' : '#bdc3c7', fontWeight: isTop ? 700 : 400 }}>{className}</span>
+                        <span style={{ color: isTop ? '#2ecc71' : '#95a5a6', fontWeight: 700 }}>{pct.toFixed(1)}%</span>
+                      </div>
+                      <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', overflow: 'hidden' }}>
+                        <div style={{ width: `${Math.min(100, Math.max(0, pct))}%`, height: '100%', background: isTop ? 'linear-gradient(90deg, #2ecc71, #27ae60)' : 'rgba(255,255,255,0.3)', borderRadius: '4px', transition: 'width 0.5s ease-in-out' }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Recommended Next Actions */}
+          {diagnosisResult.recommendations && diagnosisResult.recommendations.length > 0 && (
+            <div style={{ marginTop: '20px' }}>
+              <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ecf0f1', marginBottom: '10px' }}>Recommended Agronomic Actions:</h4>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                {diagnosisResult.recommendations.map((rec, idx) => (
+                  <span key={idx} style={{ background: 'rgba(46,204,113,0.1)', border: '1px solid rgba(46,204,113,0.3)', color: '#2ecc71', fontSize: '0.85rem', padding: '6px 14px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <ShieldCheck size={14} /> {rec}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Top Banner Executive AI OS Briefing */}
       <div className="glass-panel" style={{ padding: '24px 32px', marginBottom: '28px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'linear-gradient(135deg, rgba(18, 28, 22, 0.8) 0%, rgba(10, 15, 13, 0.95) 100%)' }}>
         <div>

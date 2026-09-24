@@ -166,6 +166,7 @@ class DiagnosisResult(BaseModel):
     crop: str
     disease_detected: str
     confidence: float
+    probabilities: Optional[Dict[str, float]] = {}
     severity_percentage: float
     severity_level: str
     infected_area_sq_cm: float
@@ -175,6 +176,9 @@ class DiagnosisResult(BaseModel):
     yield_loss_projection: str
     treatment_recommendations: List[str]
     progression: List[Dict[str, Any]]
+    model_version: Optional[str] = "1.0.0"
+    is_low_confidence: Optional[bool] = False
+    confidence_warning: Optional[str] = None
     timestamp: datetime
 
 # Multi-Agent Mesh Schemas

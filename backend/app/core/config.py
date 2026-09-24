@@ -27,8 +27,12 @@ class Settings(BaseSettings):
     # Database
     DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/agrimind_db"
     
-    # AI Engine
+    # AI & ML Engine
     MODEL_WEIGHTS_PATH: str = "app/ai_engine/weights/tomato_v8.pt"
+    KERAS_MODEL_PATH: str = "ml/models/crop_disease_model.keras"
+    CLASS_MAPPING_PATH: str = "ml/models/class_names.json"
+    MODEL_METADATA_PATH: str = "ml/models/model_metadata.json"
+    CONFIDENCE_THRESHOLD: float = 0.60
     DEVICE: str = "cpu"
     
     class Config:

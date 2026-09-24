@@ -34,6 +34,7 @@ async def predict_crop_disease(
             crop=cv_res["crop"],
             disease_detected=cv_res["disease_detected"],
             confidence=cv_res["confidence"],
+            probabilities=cv_res.get("probabilities", {}),
             severity_percentage=cv_res["severity_percentage"],
             severity_level=cv_res["severity_level"],
             infected_area_sq_cm=cv_res["infected_area_sq_cm"],
@@ -42,8 +43,10 @@ async def predict_crop_disease(
             probable_sources=[s["source"] for s in agent_res["source_analysis"]],
             yield_loss_projection=f"Projected Loss Without Treatment: {agent_res['yield_projection']['without_treatment_loss_pct']}%, Financial Risk: ${agent_res['yield_projection']['financial_risk_usd']}",
             treatment_recommendations=agent_res["treatment_plan"]["chemical_treatment"],
-
             progression=agent_res["progression"],
+            model_version=cv_res.get("model_version", "1.0.0"),
+            is_low_confidence=cv_res.get("is_low_confidence", False),
+            confidence_warning=cv_res.get("confidence_warning", None),
             timestamp=datetime.now(timezone.utc)
         )
     except Exception as e:
