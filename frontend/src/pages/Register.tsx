@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Sprout, Lock, Mail, User as UserIcon, Phone, ArrowRight, ShieldCheck } from 'lucide-react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 import { UserRole } from '../types/auth';
 
 export default function Register() {
@@ -22,7 +23,7 @@ export default function Register() {
     setError('');
 
     try {
-      const res = await axios.post('http://localhost:8000/api/v1/auth/register', {
+      const res = await axios.post(`${API_BASE_URL}/api/v1/auth/register`, {
         email,
         password,
         full_name: fullName,

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Sprout, Lock, Mail, ArrowRight, ShieldCheck, CheckSquare, Square } from 'lucide-react';
-import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 
 export default function Login() {
   const [email, setEmail] = useState('farmer@agrimind.ai');
@@ -19,7 +19,7 @@ export default function Login() {
     setError('');
 
     try {
-      const res = await axios.post('http://localhost:8000/api/v1/auth/login', {
+      const res = await axios.post(`${API_BASE_URL}/api/v1/auth/login`, {
         email,
         password,
         remember_me: rememberMe
@@ -66,7 +66,7 @@ export default function Login() {
     setLoading(true);
     try {
       const mockGoogleToken = "mock_google_id_token_12345";
-      const res = await axios.post('http://localhost:8000/api/v1/auth/google', {
+      const res = await axios.post(`${API_BASE_URL}/api/v1/auth/google`, {
         id_token: mockGoogleToken,
         email: "google.user@agrimind.ai",
         full_name: "Google Agri User"

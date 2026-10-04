@@ -7,14 +7,27 @@ from app.core.security import verify_token
 from app.domain.models import User, UserRoleEnum
 
 # Mock/Async-Sync Session helper
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.domain.models import Base, User, UserRoleEnum
 
-# Default SQLite fallback for local test execution if postgres not present
-engine = create_engine("sqlite:///./agrimind_local.db", connect_args={"check_same_thread": False})
-Base.metadata.create_all(bind=engine)
+db_url = os.getenv("DATABASE_URL", settings.DATABASE_URL)
+if db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql://", 1)
+
+try:
+    if "sqlite" in db_url:
+        engine = create_engine(db_url, connect_args={"check_same_thread": False})
+    else:
+        engine = create_engine(db_url, pool_pre_ping=True)
+    Base.metadata.create_all(bind=engine)
+except Exception as db_err:
+    print(f"[WARNING] Database connection to '{db_url}' failed: {db_err}. Falling back to SQLite local storage.")
+    engine = create_engine("sqlite:///./agrimind_local.db", connect_args={"check_same_thread": False})
+    Base.metadata.create_all(bind=engine)
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def get_db() -> Generator:

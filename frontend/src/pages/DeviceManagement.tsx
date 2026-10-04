@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Laptop, Smartphone, Monitor, Globe, ShieldAlert, LogOut, RefreshCw, CheckCircle2, Clock } from 'lucide-react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 import { DeviceSession } from '../types/auth';
 
 export default function DeviceManagement() {
@@ -13,7 +14,7 @@ export default function DeviceManagement() {
   const fetchDevices = async () => {
     setLoading(true);
     try {
-      const res = await axios.get('http://localhost:8000/api/v1/auth/devices', {
+      const res = await axios.get(`${API_BASE_URL}/api/v1/auth/devices`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setDevices(res.data);
@@ -56,7 +57,7 @@ export default function DeviceManagement() {
     setLoading(true);
     setMsg('');
     try {
-      const res = await axios.post('http://localhost:8000/api/v1/auth/devices/logout-others', {}, {
+      const res = await axios.post(`${API_BASE_URL}/api/v1/auth/devices/logout-others`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMsg(res.data.message || 'Logged out of other devices successfully.');

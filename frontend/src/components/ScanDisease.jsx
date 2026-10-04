@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Upload, Sparkles, AlertTriangle, ShieldCheck, ArrowRight, Zap } from 'lucide-react'
 import axios from 'axios'
+import { API_BASE_URL } from '../config/api'
 
 export default function ScanDisease({ setDiagnosisResult, setActiveTab }) {
   const [selectedCrop, setSelectedCrop] = useState('Tomato')
@@ -54,7 +55,7 @@ export default function ScanDisease({ setDiagnosisResult, setActiveTab }) {
     formData.append('acreage', acreage)
 
     try {
-      const res = await axios.post('http://localhost:8000/api/v1/disease/predict', formData, {
+      const res = await axios.post(`${API_BASE_URL}/api/v1/disease/predict`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
       setDiagnosisResult(res.data)

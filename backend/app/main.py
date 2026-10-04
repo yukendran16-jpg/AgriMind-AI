@@ -40,6 +40,14 @@ async def root():
         "docs_url": "/docs"
     }
 
+@app.get("/health")
+async def health_check():
+    return {
+        "status": "healthy",
+        "service": "AgriMind AI Backend Engine",
+        "version": settings.VERSION
+    }
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)

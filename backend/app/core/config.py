@@ -25,7 +25,7 @@ class Settings(BaseSettings):
     GOOGLE_CLIENT_SECRET: Optional[str] = "google-client-secret-placeholder"
     
     # Database
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/agrimind_db"
+    DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/agrimind_db"
     
     # AI & ML Engine
     MODEL_WEIGHTS_PATH: str = "app/ai_engine/weights/tomato_v8.pt"

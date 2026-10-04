@@ -6,6 +6,7 @@ import {
   Bell, Shield, Award, Sparkles, Navigation, Globe
 } from 'lucide-react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 
 export default function Wizard() {
   const { user, updateUser } = useAuth();
@@ -87,7 +88,7 @@ export default function Wizard() {
     };
 
     try {
-      await axios.post('http://localhost:8000/api/v1/auth/wizard/complete', wizardPayload, {
+      await axios.post(`${API_BASE_URL}/api/v1/auth/wizard/complete`, wizardPayload, {
         headers: { Authorization: `Bearer ${localStorage.getItem('agrimind_token')}` }
       });
     } catch (err) {

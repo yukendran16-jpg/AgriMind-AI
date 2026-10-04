@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { MapPin, AlertCircle, Shield, RefreshCw } from 'lucide-react'
 import axios from 'axios'
+import { API_BASE_URL } from '../config/api'
 
 export default function OutbreakMap() {
   const [outbreaks, setOutbreaks] = useState([])
@@ -13,7 +14,7 @@ export default function OutbreakMap() {
   const fetchOutbreaks = async () => {
     setLoading(true)
     try {
-      const res = await axios.get('http://localhost:8000/api/v1/community/outbreaks')
+      const res = await axios.get(`${API_BASE_URL}/api/v1/community/outbreaks`)
       setOutbreaks(res.data)
     } catch (err) {
       console.error(err)

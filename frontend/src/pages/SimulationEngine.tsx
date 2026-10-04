@@ -7,6 +7,7 @@ import {
   Layers, ArrowUpRight, Zap, Flame, Wind, Activity, FileText, Check
 } from 'lucide-react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 
 interface DayPoint {
   day: number;
@@ -113,7 +114,7 @@ export default function SimulationEngine() {
     };
 
     try {
-      const res = await axios.post('http://localhost:8000/api/v1/simulation/run', {
+      const res = await axios.post(`${API_BASE_URL}/api/v1/simulation/run`, {
         crop,
         disease_detected: disease,
         initial_severity: Number(initialSeverity),
@@ -239,7 +240,7 @@ export default function SimulationEngine() {
 
   const handleApplyStrategy = async (scenName: string) => {
     try {
-      await axios.post('http://localhost:8000/api/v1/simulation/apply', null, {
+      await axios.post(`${API_BASE_URL}/api/v1/simulation/apply`, null, {
         params: { scenario_name: scenName, crop, yield_saved: 94.8, profit_impact: 2840.0 },
         headers: { Authorization: `Bearer ${token}` }
       });

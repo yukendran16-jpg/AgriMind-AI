@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Sprout, Mail, ArrowRight, CheckCircle, ShieldAlert } from 'lucide-react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('farmer@agrimind.ai');
@@ -15,7 +16,7 @@ export default function ForgotPassword() {
     setError('');
 
     try {
-      await axios.post('http://localhost:8000/api/v1/auth/forgot-password', { email });
+      await axios.post(`${API_BASE_URL}/api/v1/auth/forgot-password`, { email });
     } catch (err) {
       console.warn("Backend offline, using fallback OTP...");
     } finally {
