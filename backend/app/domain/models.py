@@ -231,3 +231,92 @@ class SimulationMetrics(Base):
     unit = Column(String(50), nullable=False)
     created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
 
+# ==========================================
+# FARM MANAGEMENT, DIAGNOSIS & DECISION MODELS
+# ==========================================
+
+class FarmRecord(Base):
+    __tablename__ = "farms_registry"
+
+    id = Column(GUID, primary_key=True, default=uuid.uuid4)
+    user_id = Column(GUID, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    farm_name = Column(String(150), nullable=False)
+    farm_size_acres = Column(Float, nullable=False, default=1.0)
+    address = Column(String(255), nullable=True)
+    state = Column(String(100), nullable=True)
+    district = Column(String(100), nullable=True)
+    village = Column(String(100), nullable=True)
+    crop_types = Column(JSON, default=list, nullable=False)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
+    soil_type = Column(String(50), nullable=True, default="Loamy Soil")
+    irrigation_method = Column(String(50), nullable=True, default="Drip Irrigation")
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+
+class DiseasePredictionRecord(Base):
+    __tablename__ = "disease_predictions_history"
+
+    id = Column(GUID, primary_key=True, default=uuid.uuid4)
+    user_id = Column(GUID, ForeignKey("users.id", ondelete="CASCADE"), nullable=True)
+    scan_id = Column(String(100), nullable=False, index=True)
+    crop = Column(String(100), nullable=False)
+    disease_detected = Column(String(150), nullable=False)
+    confidence = Column(Float, nullable=False)
+    probabilities = Column(JSON, default=dict, nullable=False)
+    severity_percentage = Column(Float, nullable=False)
+    severity_level = Column(String(50), nullable=False)
+    infected_area_sq_cm = Column(Float, nullable=False, default=0.0)
+    gradcam_heatmap_url = Column(Text, nullable=True)
+    symptoms = Column(JSON, default=list, nullable=False)
+    treatment_recommendations = Column(JSON, default=list, nullable=False)
+    model_version = Column(String(50), nullable=False, default="1.0.0")
+    is_low_confidence = Column(Boolean, default=False, nullable=False)
+    confidence_warning = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+
+class FarmerDecisionRecord(Base):
+    __tablename__ = "farmer_decisions_history"
+
+    id = Column(GUID, primary_key=True, default=uuid.uuid4)
+    user_id = Column(GUID, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    simulation_id = Column(String(100), nullable=True)
+    scan_id = Column(String(100), nullable=True)
+    crop = Column(String(100), nullable=False, default="Tomato")
+    applied_scenario_name = Column(String(150), nullable=False)
+    treatment_type = Column(String(100), nullable=False)
+    decision_notes = Column(Text, nullable=True)
+    action_taken = Column(String(200), nullable=True)
+    action_date = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+    observed_outcome = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+
+class CommunityOutbreakRecord(Base):
+    __tablename__ = "community_outbreaks_registry"
+
+    id = Column(GUID, primary_key=True, default=uuid.uuid4)
+    reporter_id = Column(GUID, ForeignKey("users.id", ondelete="CASCADE"), nullable=True)
+    region = Column(String(150), nullable=False)
+    disease = Column(String(150), nullable=False)
+    severity = Column(String(50), nullable=False, default="Medium")
+    affected_farms = Column(Integer, nullable=False, default=1)
+    lat = Column(Float, nullable=False)
+    lng = Column(Float, nullable=False)
+    radius_km = Column(Float, nullable=False, default=10.0)
+    is_verified = Column(Boolean, default=False, nullable=False)
+    verification_status = Column(String(50), nullable=False, default="Unverified Report")
+    verified_by_user_id = Column(String(100), nullable=True)
+    description = Column(Text, nullable=True)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+
+class NotificationRecord(Base):
+    __tablename__ = "notifications_registry"
+
+    id = Column(GUID, primary_key=True, default=uuid.uuid4)
+    user_id = Column(GUID, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    title = Column(String(150), nullable=False)
+    message = Column(Text, nullable=False)
+    type = Column(String(50), nullable=False, default="info") # info, warning, alert, success
+    is_read = Column(Boolean, default=False, nullable=False)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+
+

@@ -1,4 +1,4 @@
-from typing import Generator, List, Callable
+from typing import Generator, List, Callable, Optional
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
@@ -26,6 +26,7 @@ def get_db() -> Generator:
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/auth/login")
+oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/auth/login", auto_error=False)
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> User:
     credentials_exception = HTTPException(
@@ -47,6 +48,20 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
         raise HTTPException(status_code=400, detail="Inactive user")
     return user
 
+def get_optional_current_user(token: Optional[str] = Depends(oauth2_scheme_optional), db: Session = Depends(get_db)) -> Optional[User]:
+    if not token:
+        return None
+    try:
+        payload = verify_token(token)
+        if payload is None or payload.get("type") != "access":
+            return None
+        user_id: str = payload.get("sub")
+        if not user_id:
+            return None
+        return db.query(User).filter(User.id == user_id).first()
+    except Exception:
+        return None
+
 def require_roles(allowed_roles: List[str]) -> Callable:
     def role_checker(current_user: User = Depends(get_current_user)) -> User:
         user_role = current_user.role.value if hasattr(current_user.role, 'value') else str(current_user.role)
@@ -57,3 +72,4 @@ def require_roles(allowed_roles: List[str]) -> Callable:
             )
         return current_user
     return role_checker
+
