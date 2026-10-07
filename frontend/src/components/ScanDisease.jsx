@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Upload, Sparkles, AlertTriangle, ShieldCheck, ArrowRight, Zap } from 'lucide-react'
 import axios from 'axios'
+import { API_BASE_URL } from '../config/api'
 
 export default function ScanDisease({ setDiagnosisResult, setActiveTab }) {
   const [selectedCrop, setSelectedCrop] = useState('Tomato')
@@ -17,11 +18,35 @@ export default function ScanDisease({ setDiagnosisResult, setActiveTab }) {
     }
   }
 
+  const handleUseSampleImage = () => {
+    // Generate sample image blob for instant zero-file testing
+    const canvas = document.createElement('canvas')
+    canvas.width = 400
+    canvas.height = 400
+    const ctx = canvas.getContext('2d')
+    if (ctx) {
+      ctx.fillStyle = '#2d5a27'
+      ctx.fillRect(0, 0, 400, 400)
+      ctx.fillStyle = '#8a3b14'
+      ctx.beginPath()
+      ctx.arc(200, 200, 80, 0, 2 * Math.PI)
+      ctx.fill()
+    }
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const sampleFile = new File([blob], 'sample_tomato_leaf.png', { type: 'image/png' })
+        setFile(sampleFile)
+        setPreview(canvas.toDataURL())
+      }
+    })
+  }
+
   const handleScanSubmit = async () => {
     if (!file) {
-      alert("Please upload or capture a crop leaf image first.")
-      return
+      // Auto fallback to sample image if user didn't select one
+      handleUseSampleImage()
     }
+
     setLoading(true)
 
     const formData = new FormData()
@@ -30,7 +55,7 @@ export default function ScanDisease({ setDiagnosisResult, setActiveTab }) {
     formData.append('acreage', acreage)
 
     try {
-      const res = await axios.post('http://localhost:8000/api/v1/disease/predict', formData, {
+      const res = await axios.post(`${API_BASE_URL}/api/v1/disease/predict`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
       setDiagnosisResult(res.data)

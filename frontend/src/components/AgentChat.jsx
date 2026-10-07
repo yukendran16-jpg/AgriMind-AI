@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Bot, Send, User, Sparkles, Cpu, ShieldCheck } from 'lucide-react'
 import axios from 'axios'
+import { API_BASE_URL } from '../config/api'
 
 export default function AgentChat() {
   const [messages, setMessages] = useState([
@@ -21,7 +22,7 @@ export default function AgentChat() {
     setLoading(true)
 
     try {
-      const res = await axios.post('http://localhost:8000/api/v1/agents/chat', {
+      const res = await axios.post(`${API_BASE_URL}/api/v1/agents/chat`, {
         sender: 'Farmer',
         content: input
       })

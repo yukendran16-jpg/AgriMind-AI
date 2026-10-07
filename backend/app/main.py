@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
-from app.api.v1 import auth_router, disease_router, agents_router, community_router
+from app.api.v1 import auth_router, disease_router, agents_router, community_router, simulation_router, weather_router, farm_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -24,6 +24,11 @@ app.include_router(auth_router.router, prefix=settings.API_V1_STR)
 app.include_router(disease_router.router, prefix=settings.API_V1_STR)
 app.include_router(agents_router.router, prefix=settings.API_V1_STR)
 app.include_router(community_router.router, prefix=settings.API_V1_STR)
+app.include_router(simulation_router.router, prefix=settings.API_V1_STR)
+app.include_router(weather_router.router, prefix=settings.API_V1_STR)
+app.include_router(farm_router.router, prefix=settings.API_V1_STR)
+
+
 
 @app.get("/")
 async def root():
@@ -33,6 +38,14 @@ async def root():
         "tagline": "Predict. Explain. Prevent. Optimize.",
         "version": settings.VERSION,
         "docs_url": "/docs"
+    }
+
+@app.get("/health")
+async def health_check():
+    return {
+        "status": "healthy",
+        "service": "AgriMind AI Backend Engine",
+        "version": settings.VERSION
     }
 
 if __name__ == "__main__":
