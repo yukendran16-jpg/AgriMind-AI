@@ -1,0 +1,9 @@
+AgriMind AI - Dataset Validation Report
+=======================================
+Tomato___Early_blight (Tomato Early Blight): 0 images [EMPTY]
+Tomato___Late_blight (Tomato Late Blight): 0 images [EMPTY]
+Tomato___healthy (Tomato Healthy): 0 images [EMPTY]
+
+Total Valid Images: 0
+Corrupted Files: 0
+Unsupported Files: 0
